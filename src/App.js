@@ -7,20 +7,51 @@ function App() {
     {
       id: uuidv4(),
       question: "What came first, the chicken or the egg?",
-      option1: { option: "Chicken", votes: 50 },
-      option2: { option: "Egg", votes: 32 },
+      options: [
+        {
+          option: "Chicken",
+          votes: 50,
+          winnerOutput: "🐤 The chicken came first, obviously",
+        },
+        {
+          option: "Egg",
+          votes: 32,
+          winnerOutput: "🥚 Of course the egg came first",
+        },
+      ],
     },
+
     {
       id: uuidv4(),
       question: "Red or blue?",
-      option1: { option: "Red", votes: 12 },
-      option2: { option: "Blue", votes: 66 },
+      options: [
+        {
+          option: "Red",
+          votes: 12,
+          winnerOutput: "🟥 Strong. Aggressive. Red.",
+        },
+        {
+          option: "Blue",
+          votes: 66,
+          winnerOutput: "🟦 We got the blues",
+        },
+      ],
     },
     {
       id: uuidv4(),
       question: "Coca Cola or Pepsi?",
-      option1: { option: "Coca Cola", votes: 10031 },
-      option2: { option: "Pepsi", votes: 301 },
+      options: [
+        {
+          option: "Coca Cola",
+          votes: 10031,
+          winnerOutput: "Never in doubt. Coca Cola is superior.",
+        },
+        {
+          option: "Pepsi",
+          votes: 301,
+          winnerOutput: "🤨 Somehow Pepsi won. What? ",
+        },
+      ],
     },
   ];
 
@@ -28,7 +59,7 @@ function App() {
     <main className="page-container">
       <div className="polls-container">
         {polls.map((poll) => (
-          <Poll poll={poll} />
+          <Poll poll={poll} key={poll.id} />
         ))}
       </div>
     </main>

@@ -1,57 +1,63 @@
 import { useState } from "react";
 
 const Poll = ({ poll }) => {
-  const [voted, setVoted] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [option1Votes, setOption1Votes] = useState(poll.option1.votes);
-  const [option2Votes, setOption2Votes] = useState(poll.option2.votes);
-  const totalVotes = option1Votes + option2Votes;
-  const option1percent = Math.round((option1Votes / totalVotes) * 100);
-  const option2percent = 100 - option1percent;
+  const [votes, setVotes] = useState(
+    poll.options.map((option) => option.votes)
+  );
+  const totalVotes = votes.reduce((sum, value) => sum + value);
+  const winningIndex = votes.indexOf(Math.max(...votes));
+  const winnerOutput = poll.options[winningIndex].winnerOutput;
+
+  const getPercent = (i) => {
+    return Math.round((votes[i] / totalVotes) * 100);
+  };
 
   const handleVote = (option) => {
-    setSelectedOption(option);
-    option && setVoted(true);
-    option === 1
-      ? setOption1Votes((prev) => prev + 1)
-      : setOption2Votes((prev) => prev + 1);
+    setSelectedOption(option + 1);
+    setVotes((prev) => {
+      const updatedVotes = [...prev];
+      updatedVotes[option] += 1;
+      return updatedVotes;
+    });
   };
+
+  // add new colors if >3 options are needed
+  const colors = ["#940d0d", "#319cc3", "#dbdd3e"];
 
   return (
     <div className="poll-card">
       <h3>{poll.question}</h3>
-      <button
-        className="option1"
-        disabled={selectedOption === 1}
-        onClick={() => handleVote(1)}
-      >
-        {poll.option1.option}
-      </button>
-      <button
-        className="option2"
-        disabled={selectedOption === 2}
-        onClick={() => handleVote(2)}
-      >
-        {poll.option2.option}
-      </button>
-      {voted && (
+
+      {poll.options.map((option, i) => (
+        <button
+          key={i}
+          className={`${selectedOption === i + 1 ? "selected" : ""}`}
+          style={{ backgroundColor: colors[i] }}
+          disabled={selectedOption}
+          onClick={() => handleVote(i)}
+        >
+          {option.option}
+        </button>
+      ))}
+
+      {selectedOption && (
+        // Currently only supports 2 options. Will need a different layout if more options are
+        // added in the future.
         <div className="results">
-          <div
-            className="result-bar option1"
-            style={{ "--flex-grow": option1Votes }}
-          >
-            <span>{option1Votes}</span>
-            <span>{option1percent}%</span>
+          <div className="result-bars">
+            {votes.map((count, i) => (
+              <div
+                key={i}
+                className={"result-bar"}
+                style={{ "--flex-grow": count, backgroundColor: colors[i] }}
+              >
+                <span>{count}</span>
+                <span>{getPercent(i)}%</span>
+              </div>
+            ))}
           </div>
-          <div
-            className="result-bar option2"
-            style={{
-              "--flex-grow": option2Votes,
-            }}
-          >
-            <span>{option2percent}%</span>
-            <span>{option2Votes}</span>
-          </div>
+          <p>{winnerOutput}</p>
         </div>
       )}
     </div>

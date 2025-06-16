@@ -1,15 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alumni+Sans+SC:ital,wght@0,100..900;1,100..900&family=Archivo:ital,wdth@0,87.5;1,87.5&display=swap");
 $red: rgb(148, 13, 13);
 $blue: rgb(49, 156, 195);
 $green: #8ef76e;
 $color-bg: #26242b;
 $color-card: #312f38;
+$standard-font: "Alumni Sans SC", sans-serif;
+$percentage-font: "Archivo", sans-serif;
 * {
   box-sizing: border-box;
-  font-family: "Alumni Sans SC", sans-serif;
+  font-family: $standard-font;
 }
 body {
   background-color: $color-bg;
+  margin: 0;
+}
+.percentage {
+  font-family: $percentage-font;
 }
 .page-container {
   max-width: 1200px;
@@ -20,7 +26,7 @@ body {
 .polls-container {
   display: flex;
   justify-content: center;
-  margin: auto;
+  margin: 8px 0 auto;
   gap: 50px;
   flex-direction: column;
   flex-wrap: wrap;
@@ -51,7 +57,6 @@ body {
     opacity: 1;
     transition: box-shadow ease 0.5s, opacity ease 0.3s;
     &[disabled] {
-      color: black;
       cursor: default;
       opacity: 0.5;
       &:hover {
@@ -64,6 +69,8 @@ body {
     &.selected {
       border: 1px solid $green;
       color: #fff;
+    }
+    &.winner {
       box-shadow: 0 0 20px $green;
       opacity: 1;
       &:hover {
@@ -100,10 +107,11 @@ body {
       }
       &:last-child {
         border-radius: 0 8px 8px 0;
+        justify-content: flex-end;
       }
     }
   }
-  button {
-    background: none;
+  .winner-output {
+    font-size: 24px;
   }
 }
